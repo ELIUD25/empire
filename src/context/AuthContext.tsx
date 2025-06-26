@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 import { apiService } from '../services/api.ts';
 
 interface User {
@@ -21,7 +27,12 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string, referralCode?: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    name: string,
+    referralCode?: string
+  ) => Promise<void>;
   logout: () => void;
   updateUser: (updates: Partial<User>) => void;
   checkReferralCode: (code: string) => Promise<boolean>;
@@ -50,7 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const initializeAuth = async () => {
       const token = localStorage.getItem('empire_mine_token');
-      
+
       if (token) {
         try {
           const response = await apiService.getCurrentUser();
@@ -60,7 +71,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           localStorage.removeItem('empire_mine_token');
         }
       }
-      
+
       setLoading(false);
     };
 
@@ -72,8 +83,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(response.user);
   };
 
-  const register = async (email: string, password: string, name: string, referralCode?: string) => {
-    const response = await apiService.register({ name, email, password, referralCode });
+  const register = async (
+    email: string,
+    password: string,
+    name: string,
+    referralCode?: string
+  ) => {
+    const response = await apiService.register({
+      name,
+      email,
+      password,
+      referralCode,
+    });
     setUser(response.user);
   };
 
@@ -116,12 +137,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     updateUser,
     checkReferralCode,
     activateAccount,
-    refreshUser
+    refreshUser,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

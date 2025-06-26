@@ -20,9 +20,13 @@ const app = express();
 
 // CORS configuration for production
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://empire-eosin.vercel.app', 'https://www.empire-eosin.vercel.app']
-    : ['http://localhost:5173', 'http://localhost:3000'],
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? [
+          'https://empire-eosin.vercel.app',
+          'https://www.empire-eosin.vercel.app',
+        ]
+      : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -84,9 +88,10 @@ app.use('*', (req, res) => {
 app.use((err, req, res, next) => {
   console.error('Error:', err.stack);
   res.status(500).json({
-    error: process.env.NODE_ENV === 'production'
-      ? 'Something went wrong!'
-      : err.message,
+    error:
+      process.env.NODE_ENV === 'production'
+        ? 'Something went wrong!'
+        : err.message,
   });
 });
 

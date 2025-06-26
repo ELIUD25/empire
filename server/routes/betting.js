@@ -7,7 +7,9 @@ const router = express.Router();
 // Get all betting tips
 router.get('/tips', auth, async (req, res) => {
   try {
-    const tips = await BettingTip.find({ isActive: true }).sort({ createdAt: -1 });
+    const tips = await BettingTip.find({ isActive: true }).sort({
+      createdAt: -1,
+    });
     res.json(tips);
   } catch (error) {
     console.error('Get betting tips error:', error);
@@ -30,7 +32,9 @@ router.post('/tips', adminAuth, async (req, res) => {
 // Update betting tip (admin only)
 router.put('/tips/:id', adminAuth, async (req, res) => {
   try {
-    const tip = await BettingTip.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const tip = await BettingTip.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!tip) {
       return res.status(404).json({ error: 'Betting tip not found' });
     }

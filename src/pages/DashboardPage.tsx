@@ -1,9 +1,22 @@
 import React, { useState } from 'react';
-import { Crown, DollarSign, Users, TrendingUp, Eye, Clock, Gift, Copy, CheckCircle, AlertCircle, CreditCard, Banknote } from 'lucide-react';
+import {
+  Crown,
+  DollarSign,
+  Users,
+  TrendingUp,
+  Eye,
+  Clock,
+  Gift,
+  Copy,
+  CheckCircle,
+  AlertCircle,
+  CreditCard,
+  Banknote,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext.tsx';
 
 const DashboardPage: React.FC = () => {
-  const { user, activateAccount } = useAuth();
+  const { user, activateAccount } = useAuth(); // Removed updateUser
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
@@ -13,7 +26,7 @@ const DashboardPage: React.FC = () => {
   const [withdrawDetails, setWithdrawDetails] = useState({
     phoneNumber: '',
     accountNumber: '',
-    bankName: ''
+    bankName: '',
   });
   const [copied, setCopied] = useState(false);
   const [activating, setActivating] = useState(false);
@@ -28,14 +41,18 @@ const DashboardPage: React.FC = () => {
 
   const handleActivation = async () => {
     if (user.balance < 500) {
-      alert('Insufficient balance! Please deposit at least 500 KES to activate your account.');
+      alert(
+        'Insufficient balance! Please deposit at least 500 KES to activate your account.'
+      );
       return;
     }
 
     setActivating(true);
     try {
       await activateAccount();
-      alert('Account activated successfully! You can now access all earning features.');
+      alert(
+        'Account activated successfully! You can now access all earning features.'
+      );
     } catch {
       alert('Activation failed. Please try again.');
     } finally {
@@ -50,6 +67,7 @@ const DashboardPage: React.FC = () => {
     }
 
     try {
+      // In a real app, this would call the API
       alert('Deposit request submitted! Please wait for admin approval.');
       setShowDepositModal(false);
       setDepositAmount('');
@@ -75,12 +93,16 @@ const DashboardPage: React.FC = () => {
       return;
     }
 
-    if (withdrawMethod === 'bank' && (!withdrawDetails.accountNumber || !withdrawDetails.bankName)) {
+    if (
+      withdrawMethod === 'bank' &&
+      (!withdrawDetails.accountNumber || !withdrawDetails.bankName)
+    ) {
       alert('Please enter bank details');
       return;
     }
 
     try {
+      // In a real app, this would call the API
       alert('Withdrawal request submitted! Please wait for admin approval.');
       setShowWithdrawModal(false);
       setWithdrawAmount('');
@@ -97,7 +119,7 @@ const DashboardPage: React.FC = () => {
       icon: DollarSign,
       color: 'from-green-600/20 to-emerald-600/20',
       borderColor: 'border-green-400/30',
-      iconColor: 'text-green-400'
+      iconColor: 'text-green-400',
     },
     {
       label: 'Total Earnings',
@@ -105,7 +127,7 @@ const DashboardPage: React.FC = () => {
       icon: TrendingUp,
       color: 'from-blue-600/20 to-cyan-600/20',
       borderColor: 'border-blue-400/30',
-      iconColor: 'text-blue-400'
+      iconColor: 'text-blue-400',
     },
     {
       label: 'Referrals',
@@ -113,24 +135,53 @@ const DashboardPage: React.FC = () => {
       icon: Users,
       color: 'from-purple-600/20 to-pink-600/20',
       borderColor: 'border-purple-400/30',
-      iconColor: 'text-purple-400'
+      iconColor: 'text-purple-400',
     },
     {
       label: 'Account Status',
       value: user.isActivated ? 'Active' : 'Inactive',
       icon: user.isActivated ? CheckCircle : AlertCircle,
-      color: user.isActivated ? 'from-green-600/20 to-emerald-600/20' : 'from-orange-600/20 to-red-600/20',
-      borderColor: user.isActivated ? 'border-green-400/30' : 'border-orange-400/30',
-      iconColor: user.isActivated ? 'text-green-400' : 'text-orange-400'
-    }
+      color: user.isActivated
+        ? 'from-green-600/20 to-emerald-600/20'
+        : 'from-orange-600/20 to-red-600/20',
+      borderColor: user.isActivated
+        ? 'border-green-400/30'
+        : 'border-orange-400/30',
+      iconColor: user.isActivated ? 'text-green-400' : 'text-orange-400',
+    },
   ];
 
   const earningMethods = [
-    { name: 'Referral Program', icon: Users, earnings: '200-250 KES per referral', status: 'Available' },
-    { name: 'Blog Writing', icon: Eye, earnings: 'Per post rewards', status: user.isActivated ? 'Available' : 'Locked' },
-    { name: 'Watch Ads', icon: Eye, earnings: '10 KES per ad', status: user.isActivated ? 'Available' : 'Locked' },
-    { name: 'Microtasks', icon: Clock, earnings: 'Variable rewards', status: user.isActivated ? 'Available' : 'Locked' },
-    { name: 'Casino Games', icon: Gift, earnings: 'Game rewards', status: user.isActivated ? 'Available' : 'Locked' }
+    {
+      name: 'Referral Program',
+      icon: Users,
+      earnings: '200-250 KES per referral',
+      status: 'Available',
+    },
+    {
+      name: 'Blog Writing',
+      icon: Eye,
+      earnings: 'Per post rewards',
+      status: user.isActivated ? 'Available' : 'Locked',
+    },
+    {
+      name: 'Watch Ads',
+      icon: Eye,
+      earnings: '10 KES per ad',
+      status: user.isActivated ? 'Available' : 'Locked',
+    },
+    {
+      name: 'Microtasks',
+      icon: Clock,
+      earnings: 'Variable rewards',
+      status: user.isActivated ? 'Available' : 'Locked',
+    },
+    {
+      name: 'Casino Games',
+      icon: Gift,
+      earnings: 'Game rewards',
+      status: user.isActivated ? 'Available' : 'Locked',
+    },
   ];
 
   return (
@@ -140,11 +191,13 @@ const DashboardPage: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center space-x-3 mb-4">
             <Crown className="h-8 w-8 text-yellow-400" />
-            <h1 className="text-3xl font-bold text-white">Welcome back, {user.name}!</h1>
+            <h1 className="text-3xl font-bold text-white">
+              Welcome back, {user.name}!
+            </h1>
           </div>
           <p className="text-gray-300">
-            {user.isActivated 
-              ? 'Your account is active. Start earning now!' 
+            {user.isActivated
+              ? 'Your account is active. Start earning now!'
               : 'Activate your account to unlock all earning features.'}
           </p>
         </div>
@@ -154,14 +207,19 @@ const DashboardPage: React.FC = () => {
           <div className="bg-gradient-to-r from-orange-600/20 to-red-600/20 border border-orange-400/30 rounded-xl p-6 mb-8">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-semibold text-white mb-2">Account Activation Required</h3>
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Account Activation Required
+                </h3>
                 <p className="text-gray-300 mb-4">
-                  Activate your account for 500 KES to unlock all earning features including ads, tasks, casino, and more!
+                  Activate your account for 500 KES to unlock all earning
+                  features including ads, tasks, casino, and more!
                 </p>
                 <div className="flex items-center space-x-4 text-sm">
                   <div className="flex items-center space-x-1">
                     <CheckCircle className="h-4 w-4 text-green-400" />
-                    <span className="text-gray-300">Referral earnings available</span>
+                    <span className="text-gray-300">
+                      Referral earnings available
+                    </span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <AlertCircle className="h-4 w-4 text-orange-400" />
@@ -200,7 +258,9 @@ const DashboardPage: React.FC = () => {
           {/* Quick Actions */}
           <div className="lg:col-span-2">
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 mb-8">
-              <h2 className="text-2xl font-semibold text-white mb-6">Quick Actions</h2>
+              <h2 className="text-2xl font-semibold text-white mb-6">
+                Quick Actions
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <button
                   onClick={() => setShowDepositModal(true)}
@@ -222,7 +282,9 @@ const DashboardPage: React.FC = () => {
 
             {/* Earning Methods */}
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-              <h2 className="text-2xl font-semibold text-white mb-6">Earning Methods</h2>
+              <h2 className="text-2xl font-semibold text-white mb-6">
+                Earning Methods
+              </h2>
               <div className="space-y-4">
                 {earningMethods.map((method, index) => (
                   <div
@@ -232,8 +294,12 @@ const DashboardPage: React.FC = () => {
                     <div className="flex items-center space-x-4">
                       <method.icon className="h-6 w-6 text-blue-400" />
                       <div>
-                        <h3 className="text-white font-medium">{method.name}</h3>
-                        <p className="text-gray-400 text-sm">{method.earnings}</p>
+                        <h3 className="text-white font-medium">
+                          {method.name}
+                        </h3>
+                        <p className="text-gray-400 text-sm">
+                          {method.earnings}
+                        </p>
                       </div>
                     </div>
                     <span
@@ -254,13 +320,19 @@ const DashboardPage: React.FC = () => {
           {/* Referral Section */}
           <div className="space-y-6">
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">Referral Program</h3>
+              <h3 className="text-xl font-semibold text-white mb-4">
+                Referral Program
+              </h3>
               <div className="space-y-4">
                 <div className="text-center">
-                  <p className="text-gray-300 text-sm mb-2">Your Referral Code</p>
-                  <p className="text-2xl font-bold text-yellow-400">{user.referralCode}</p>
+                  <p className="text-gray-300 text-sm mb-2">
+                    Your Referral Code
+                  </p>
+                  <p className="text-2xl font-bold text-yellow-400">
+                    {user.referralCode}
+                  </p>
                 </div>
-                
+
                 <div>
                   <p className="text-gray-300 text-sm mb-2">Referral Link</p>
                   <div className="flex items-center space-x-2">
@@ -274,13 +346,19 @@ const DashboardPage: React.FC = () => {
                       onClick={copyReferralLink}
                       className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
                     >
-                      {copied ? <CheckCircle className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                      {copied ? (
+                        <CheckCircle className="h-4 w-4" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
                     </button>
                   </div>
                 </div>
 
                 <div className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 border border-blue-400/20 rounded-lg p-4">
-                  <h4 className="text-white font-medium mb-2">Referral Rewards</h4>
+                  <h4 className="text-white font-medium mb-2">
+                    Referral Rewards
+                  </h4>
                   <div className="space-y-1 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-300">1st Level:</span>
@@ -301,7 +379,9 @@ const DashboardPage: React.FC = () => {
 
             {/* Account Info */}
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">Account Information</h3>
+              <h3 className="text-xl font-semibold text-white mb-4">
+                Account Information
+              </h3>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-300">Email:</span>
@@ -309,12 +389,16 @@ const DashboardPage: React.FC = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-300">Member Since:</span>
-                  <span className="text-white">{new Date(user.registeredAt).toLocaleDateString()}</span>
+                  <span className="text-white">
+                    {new Date(user.registeredAt).toLocaleDateString()}
+                  </span>
                 </div>
                 {user.activatedAt && (
                   <div className="flex justify-between">
                     <span className="text-gray-300">Activated:</span>
-                    <span className="text-white">{new Date(user.activatedAt).toLocaleDateString()}</span>
+                    <span className="text-white">
+                      {new Date(user.activatedAt).toLocaleDateString()}
+                    </span>
                   </div>
                 )}
                 {user.referredBy && (
@@ -332,11 +416,15 @@ const DashboardPage: React.FC = () => {
         {showDepositModal && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-gray-900 border border-gray-700 rounded-xl p-6 w-full max-w-md">
-              <h3 className="text-xl font-semibold text-white mb-4">Deposit Funds</h3>
-              
+              <h3 className="text-xl font-semibold text-white mb-4">
+                Deposit Funds
+              </h3>
+
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm text-gray-300 mb-2">Amount (KES)</label>
+                  <label className="block text-sm text-gray-300 mb-2">
+                    Amount (KES)
+                  </label>
                   <input
                     type="number"
                     value={depositAmount}
@@ -346,9 +434,11 @@ const DashboardPage: React.FC = () => {
                     min="1"
                   />
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm text-gray-300 mb-2">M-Pesa Confirmation Message</label>
+                  <label className="block text-sm text-gray-300 mb-2">
+                    M-Pesa Confirmation Message
+                  </label>
                   <textarea
                     value={mpesaMessage}
                     onChange={(e) => setMpesaMessage(e.target.value)}
@@ -356,15 +446,16 @@ const DashboardPage: React.FC = () => {
                     placeholder="Paste your M-Pesa confirmation message here"
                   />
                 </div>
-                
+
                 <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-3">
                   <p className="text-blue-300 text-sm">
-                    Send money to: <strong>0712345678</strong><br />
+                    Send money to: <strong>0712345678</strong>
+                    <br />
                     Then paste the confirmation message above.
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex space-x-3 mt-6">
                 <button
                   onClick={() => setShowDepositModal(false)}
@@ -387,11 +478,15 @@ const DashboardPage: React.FC = () => {
         {showWithdrawModal && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-gray-900 border border-gray-700 rounded-xl p-6 w-full max-w-md">
-              <h3 className="text-xl font-semibold text-white mb-4">Withdraw Funds</h3>
-              
+              <h3 className="text-xl font-semibold text-white mb-4">
+                Withdraw Funds
+              </h3>
+
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm text-gray-300 mb-2">Amount (KES)</label>
+                  <label className="block text-sm text-gray-300 mb-2">
+                    Amount (KES)
+                  </label>
                   <input
                     type="number"
                     value={withdrawAmount}
@@ -401,28 +496,43 @@ const DashboardPage: React.FC = () => {
                     min="1"
                     max={user.balance}
                   />
-                  <p className="text-xs text-gray-400 mt-1">Available: {user.balance} KES</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Available: {user.balance} KES
+                  </p>
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm text-gray-300 mb-2">Withdrawal Method</label>
+                  <label className="block text-sm text-gray-300 mb-2">
+                    Withdrawal Method
+                  </label>
                   <select
                     value={withdrawMethod}
                     onChange={(e) => setWithdrawMethod(e.target.value)}
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white"
                   >
-                    <option value="mpesa" className="bg-gray-800">M-Pesa</option>
-                    <option value="bank" className="bg-gray-800">Bank Transfer</option>
+                    <option value="mpesa" className="bg-gray-800">
+                      M-Pesa
+                    </option>
+                    <option value="bank" className="bg-gray-800">
+                      Bank Transfer
+                    </option>
                   </select>
                 </div>
-                
+
                 {withdrawMethod === 'mpesa' ? (
                   <div>
-                    <label className="block text-sm text-gray-300 mb-2">M-Pesa Phone Number</label>
+                    <label className="block text-sm text-gray-300 mb-2">
+                      M-Pesa Phone Number
+                    </label>
                     <input
                       type="tel"
                       value={withdrawDetails.phoneNumber}
-                      onChange={(e) => setWithdrawDetails({...withdrawDetails, phoneNumber: e.target.value})}
+                      onChange={(e) =>
+                        setWithdrawDetails({
+                          ...withdrawDetails,
+                          phoneNumber: e.target.value,
+                        })
+                      }
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white"
                       placeholder="0712345678"
                     />
@@ -430,21 +540,35 @@ const DashboardPage: React.FC = () => {
                 ) : (
                   <>
                     <div>
-                      <label className="block text-sm text-gray-300 mb-2">Bank Name</label>
+                      <label className="block text-sm text-gray-300 mb-2">
+                        Bank Name
+                      </label>
                       <input
                         type="text"
                         value={withdrawDetails.bankName}
-                        onChange={(e) => setWithdrawDetails({...withdrawDetails, bankName: e.target.value})}
+                        onChange={(e) =>
+                          setWithdrawDetails({
+                            ...withdrawDetails,
+                            bankName: e.target.value,
+                          })
+                        }
                         className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white"
                         placeholder="Enter bank name"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-300 mb-2">Account Number</label>
+                      <label className="block text-sm text-gray-300 mb-2">
+                        Account Number
+                      </label>
                       <input
                         type="text"
                         value={withdrawDetails.accountNumber}
-                        onChange={(e) => setWithdrawDetails({...withdrawDetails, accountNumber: e.target.value})}
+                        onChange={(e) =>
+                          setWithdrawDetails({
+                            ...withdrawDetails,
+                            accountNumber: e.target.value,
+                          })
+                        }
                         className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white"
                         placeholder="Enter account number"
                       />
@@ -452,7 +576,7 @@ const DashboardPage: React.FC = () => {
                   </>
                 )}
               </div>
-              
+
               <div className="flex space-x-3 mt-6">
                 <button
                   onClick={() => setShowWithdrawModal(false)}

@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
-import { Gamepad2, DollarSign, Trophy, Dice1, Dice2, Dice3, Dice4, Dice5, Dice6, Play, RotateCcw, Crown, Star } from 'lucide-react';
+import {
+  Gamepad2,
+  DollarSign,
+  Trophy,
+  Dice1,
+  Dice2,
+  Dice3,
+  Dice4,
+  Dice5,
+  Dice6,
+  Play,
+  RotateCcw,
+  Crown,
+  Star,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext.tsx';
 
 const CasinoPage: React.FC = () => {
@@ -15,8 +29,14 @@ const CasinoPage: React.FC = () => {
   const games = [
     { id: 'slots', name: 'Slot Machine', icon: '🎰', minBet: 10, maxBet: 500 },
     { id: 'dice', name: 'Dice Roll', icon: '🎲', minBet: 20, maxBet: 1000 },
-    { id: 'blackjack', name: 'Blackjack', icon: '🃏', minBet: 50, maxBet: 2000 },
-    { id: 'roulette', name: 'Roulette', icon: '🎯', minBet: 25, maxBet: 1500 }
+    {
+      id: 'blackjack',
+      name: 'Blackjack',
+      icon: '🃏',
+      minBet: 50,
+      maxBet: 2000,
+    },
+    { id: 'roulette', name: 'Roulette', icon: '🎯', minBet: 25, maxBet: 1500 },
   ];
 
   const slotSymbols = ['🍎', '🍊', '🍇', '🍒', '🍋', '⭐', '💎', '👑'];
@@ -35,29 +55,37 @@ const CasinoPage: React.FC = () => {
       setSlotResult([
         slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
         slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
-        slotSymbols[Math.floor(Math.random() * slotSymbols.length)]
+        slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
       ]);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
     const finalResult = [
       slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
       slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
-      slotSymbols[Math.floor(Math.random() * slotSymbols.length)]
+      slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
     ];
     setSlotResult(finalResult);
 
     // Extremely low win rate - 1% chance
     let winAmount = 0;
     const winChance = Math.random();
-    
-    if (winChance < 0.01) { // 1% chance to win
-      if (finalResult[0] === finalResult[1] && finalResult[1] === finalResult[2]) {
+
+    if (winChance < 0.01) {
+      // 1% chance to win
+      if (
+        finalResult[0] === finalResult[1] &&
+        finalResult[1] === finalResult[2]
+      ) {
         if (finalResult[0] === '👑') winAmount = betAmount * 10;
         else if (finalResult[0] === '💎') winAmount = betAmount * 8;
         else if (finalResult[0] === '⭐') winAmount = betAmount * 5;
         else winAmount = betAmount * 3;
-      } else if (finalResult[0] === finalResult[1] || finalResult[1] === finalResult[2] || finalResult[0] === finalResult[2]) {
+      } else if (
+        finalResult[0] === finalResult[1] ||
+        finalResult[1] === finalResult[2] ||
+        finalResult[0] === finalResult[2]
+      ) {
         winAmount = betAmount * 1.5;
       }
     }
@@ -86,22 +114,23 @@ const CasinoPage: React.FC = () => {
     for (let i = 0; i < 8; i++) {
       setDiceResult([
         Math.floor(Math.random() * 6) + 1,
-        Math.floor(Math.random() * 6) + 1
+        Math.floor(Math.random() * 6) + 1,
       ]);
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
     }
 
     const finalDice = [
       Math.floor(Math.random() * 6) + 1,
-      Math.floor(Math.random() * 6) + 1
+      Math.floor(Math.random() * 6) + 1,
     ];
     setDiceResult(finalDice);
 
     // Extremely low win rate - 1% chance
     let winAmount = 0;
     const winChance = Math.random();
-    
-    if (winChance < 0.01) { // 1% chance to win
+
+    if (winChance < 0.01) {
+      // 1% chance to win
       const sum = finalDice[0] + finalDice[1];
       if (sum === 7 || sum === 11) winAmount = betAmount * 2;
       else if (finalDice[0] === finalDice[1]) winAmount = betAmount * 3;
@@ -136,10 +165,12 @@ const CasinoPage: React.FC = () => {
     // Extremely low win rate - 1% chance
     let winAmount = 0;
     const winChance = Math.random();
-    
-    if (winChance < 0.01) { // 1% chance to win
+
+    if (winChance < 0.01) {
+      // 1% chance to win
       if (playerCard === 21) winAmount = betAmount * 2.5;
-      else if (playerCard > dealerCard && playerCard <= 21) winAmount = betAmount * 2;
+      else if (playerCard > dealerCard && playerCard <= 21)
+        winAmount = betAmount * 2;
       else if (dealerCard > 21 && playerCard <= 21) winAmount = betAmount * 2;
     }
 
@@ -166,7 +197,9 @@ const CasinoPage: React.FC = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-gradient-to-r from-orange-600/20 to-red-600/20 border border-orange-400/30 rounded-xl p-12">
             <Gamepad2 className="h-16 w-16 text-orange-400 mx-auto mb-4" />
-            <h1 className="text-3xl font-bold text-white mb-4">Casino Feature Locked</h1>
+            <h1 className="text-3xl font-bold text-white mb-4">
+              Casino Feature Locked
+            </h1>
             <p className="text-xl text-gray-300 mb-6">
               Activate your account to access casino games and start playing!
             </p>
@@ -193,7 +226,8 @@ const CasinoPage: React.FC = () => {
           </p>
           <div className="mt-4 bg-orange-500/20 border border-orange-400/30 rounded-lg p-3 max-w-md mx-auto">
             <p className="text-orange-300 text-sm">
-              <strong>Notice:</strong> Games are for entertainment. Win rates are very low (1%).
+              <strong>Notice:</strong> Games are for entertainment. Win rates
+              are very low (1%).
             </p>
           </div>
         </div>
@@ -202,7 +236,9 @@ const CasinoPage: React.FC = () => {
         <div className="bg-gradient-to-r from-green-600/20 to-emerald-600/20 border border-green-400/30 rounded-xl p-6 mb-8 text-center">
           <div className="flex items-center justify-center space-x-2 mb-2">
             <DollarSign className="h-8 w-8 text-green-400" />
-            <span className="text-3xl font-bold text-white">{user.balance} KES</span>
+            <span className="text-3xl font-bold text-white">
+              {user.balance} KES
+            </span>
           </div>
           <p className="text-gray-300">Your Balance</p>
         </div>
@@ -268,11 +304,16 @@ const CasinoPage: React.FC = () => {
         <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8">
           {activeGame === 'slots' && (
             <div className="text-center">
-              <h2 className="text-2xl font-semibold text-white mb-6">🎰 Slot Machine</h2>
+              <h2 className="text-2xl font-semibold text-white mb-6">
+                🎰 Slot Machine
+              </h2>
               <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-400/30 rounded-xl p-8 mb-6">
                 <div className="flex justify-center space-x-4 mb-6">
                   {slotResult.map((symbol, index) => (
-                    <div key={index} className="bg-white/10 rounded-lg p-4 w-20 h-20 flex items-center justify-center">
+                    <div
+                      key={index}
+                      className="bg-white/10 rounded-lg p-4 w-20 h-20 flex items-center justify-center"
+                    >
                       <span className="text-4xl">{symbol}</span>
                     </div>
                   ))}
@@ -287,8 +328,14 @@ const CasinoPage: React.FC = () => {
                   disabled={isPlaying || user.balance < betAmount}
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 mx-auto"
                 >
-                  {isPlaying ? <RotateCcw className="h-5 w-5 animate-spin" /> : <Play className="h-5 w-5" />}
-                  <span>{isPlaying ? 'Spinning...' : `Spin (${betAmount} KES)`}</span>
+                  {isPlaying ? (
+                    <RotateCcw className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Play className="h-5 w-5" />
+                  )}
+                  <span>
+                    {isPlaying ? 'Spinning...' : `Spin (${betAmount} KES)`}
+                  </span>
                 </button>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
@@ -318,7 +365,9 @@ const CasinoPage: React.FC = () => {
 
           {activeGame === 'dice' && (
             <div className="text-center">
-              <h2 className="text-2xl font-semibold text-white mb-6">🎲 Dice Roll</h2>
+              <h2 className="text-2xl font-semibold text-white mb-6">
+                🎲 Dice Roll
+              </h2>
               <div className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border border-blue-400/30 rounded-xl p-8 mb-6">
                 <div className="flex justify-center space-x-6 mb-6">
                   <div className="bg-white/10 rounded-lg p-4">
@@ -341,8 +390,14 @@ const CasinoPage: React.FC = () => {
                   disabled={isPlaying || user.balance < betAmount}
                   className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 mx-auto"
                 >
-                  {isPlaying ? <RotateCcw className="h-5 w-5 animate-spin" /> : <Play className="h-5 w-5" />}
-                  <span>{isPlaying ? 'Rolling...' : `Roll Dice (${betAmount} KES)`}</span>
+                  {isPlaying ? (
+                    <RotateCcw className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Play className="h-5 w-5" />
+                  )}
+                  <span>
+                    {isPlaying ? 'Rolling...' : `Roll Dice (${betAmount} KES)`}
+                  </span>
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
@@ -364,19 +419,29 @@ const CasinoPage: React.FC = () => {
 
           {activeGame === 'blackjack' && (
             <div className="text-center">
-              <h2 className="text-2xl font-semibold text-white mb-6">🃏 Blackjack</h2>
+              <h2 className="text-2xl font-semibold text-white mb-6">
+                🃏 Blackjack
+              </h2>
               <div className="bg-gradient-to-r from-green-600/20 to-emerald-600/20 border border-green-400/30 rounded-xl p-8 mb-6">
                 <div className="grid grid-cols-2 gap-8 mb-6">
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-3">Your Hand</h3>
+                    <h3 className="text-lg font-medium text-white mb-3">
+                      Your Hand
+                    </h3>
                     <div className="bg-white/10 rounded-lg p-6">
-                      <p className="text-3xl font-bold text-white">{cardResult.player}</p>
+                      <p className="text-3xl font-bold text-white">
+                        {cardResult.player}
+                      </p>
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-3">Dealer Hand</h3>
+                    <h3 className="text-lg font-medium text-white mb-3">
+                      Dealer Hand
+                    </h3>
                     <div className="bg-white/10 rounded-lg p-6">
-                      <p className="text-3xl font-bold text-white">{cardResult.dealer}</p>
+                      <p className="text-3xl font-bold text-white">
+                        {cardResult.dealer}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -390,8 +455,14 @@ const CasinoPage: React.FC = () => {
                   disabled={isPlaying || user.balance < betAmount}
                   className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 mx-auto"
                 >
-                  {isPlaying ? <RotateCcw className="h-5 w-5 animate-spin" /> : <Play className="h-5 w-5" />}
-                  <span>{isPlaying ? 'Dealing...' : `Deal Cards (${betAmount} KES)`}</span>
+                  {isPlaying ? (
+                    <RotateCcw className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Play className="h-5 w-5" />
+                  )}
+                  <span>
+                    {isPlaying ? 'Dealing...' : `Deal Cards (${betAmount} KES)`}
+                  </span>
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -409,10 +480,14 @@ const CasinoPage: React.FC = () => {
 
           {activeGame === 'roulette' && (
             <div className="text-center">
-              <h2 className="text-2xl font-semibold text-white mb-6">🎯 Roulette</h2>
+              <h2 className="text-2xl font-semibold text-white mb-6">
+                🎯 Roulette
+              </h2>
               <div className="bg-gradient-to-r from-red-600/20 to-pink-600/20 border border-red-400/30 rounded-xl p-8">
                 <p className="text-white text-lg mb-4">Coming Soon!</p>
-                <p className="text-gray-300">This exciting game will be available in the next update.</p>
+                <p className="text-gray-300">
+                  This exciting game will be available in the next update.
+                </p>
               </div>
             </div>
           )}

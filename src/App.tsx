@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import Header from './components/Header.tsx';
 import Footer from './components/Footer.tsx';
 import HomePage from './pages/HomePage.tsx';
@@ -35,10 +40,28 @@ function AppContent() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/dashboard" />} />
-          <Route path="/register" element={!user ? <RegisterPage /> : <Navigate to="/dashboard" />} />
-          <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/login" />} />
-          <Route path="/admin" element={user?.role === 'admin' ? <AdminDashboard /> : <Navigate to="/dashboard" />} />
+          <Route
+            path="/login"
+            element={!user ? <LoginPage /> : <Navigate to="/dashboard" />}
+          />
+          <Route
+            path="/register"
+            element={!user ? <RegisterPage /> : <Navigate to="/dashboard" />}
+          />
+          <Route
+            path="/dashboard"
+            element={user ? <DashboardPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/admin"
+            element={
+              user?.role === 'admin' ? (
+                <AdminDashboard />
+              ) : (
+                <Navigate to="/dashboard" />
+              )
+            }
+          />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/betting" element={<BettingPage />} />
           <Route path="/trading" element={<TradingPage />} />

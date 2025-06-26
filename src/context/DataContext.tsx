@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 
 interface BettingTip {
   id: number;
@@ -200,7 +206,9 @@ interface DataContextType {
   incrementAdView: (id: number) => void;
   tasks: Task[];
   taskSubmissions: TaskSubmission[];
-  addTask: (task: Omit<Task, 'id' | 'currentResponses' | 'currentBidders'>) => void;
+  addTask: (
+    task: Omit<Task, 'id' | 'currentResponses' | 'currentBidders'>
+  ) => void;
   updateTask: (id: number, task: Partial<Task>) => void;
   deleteTask: (id: number) => void;
   submitTask: (submission: Omit<TaskSubmission, 'id' | 'submittedAt'>) => void;
@@ -208,8 +216,12 @@ interface DataContextType {
   rejectTaskSubmission: (id: number, feedback: string) => void;
   depositRequests: DepositRequest[];
   withdrawalRequests: WithdrawalRequest[];
-  addDepositRequest: (request: Omit<DepositRequest, 'id' | 'submittedAt'>) => void;
-  addWithdrawalRequest: (request: Omit<WithdrawalRequest, 'id' | 'submittedAt'>) => void;
+  addDepositRequest: (
+    request: Omit<DepositRequest, 'id' | 'submittedAt'>
+  ) => void;
+  addWithdrawalRequest: (
+    request: Omit<WithdrawalRequest, 'id' | 'submittedAt'>
+  ) => void;
   approveDeposit: (id: number) => void;
   rejectDeposit: (id: number) => void;
   approveWithdrawal: (id: number) => void;
@@ -256,7 +268,9 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskSubmissions, setTaskSubmissions] = useState<TaskSubmission[]>([]);
   const [depositRequests, setDepositRequests] = useState<DepositRequest[]>([]);
-  const [withdrawalRequests, setWithdrawalRequests] = useState<WithdrawalRequest[]>([]);
+  const [withdrawalRequests, setWithdrawalRequests] = useState<
+    WithdrawalRequest[]
+  >([]);
   const [userActivities, setUserActivities] = useState<UserActivity[]>([]);
 
   useEffect(() => {
@@ -297,7 +311,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         taskSubmissions,
         depositRequests,
         withdrawalRequests,
-        userActivities
+        userActivities,
       };
       localStorage.setItem('empiremine_data', JSON.stringify(data));
     };
@@ -315,80 +329,93 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     taskSubmissions,
     depositRequests,
     withdrawalRequests,
-    userActivities
+    userActivities,
   ]);
 
   const addBettingTip = (tip: Omit<BettingTip, 'id'>) => {
     const newTip = { ...tip, id: Date.now() };
-    setBettingTips(prev => [newTip, ...prev]);
+    setBettingTips((prev) => [newTip, ...prev]);
   };
 
   const updateBettingTip = (id: number, tip: Partial<BettingTip>) => {
-    setBettingTips(prev => prev.map(t => t.id === id ? { ...t, ...tip } : t));
+    setBettingTips((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, ...tip } : t))
+    );
   };
 
   const deleteBettingTip = (id: number) => {
-    setBettingTips(prev => prev.filter(t => t.id !== id));
+    setBettingTips((prev) => prev.filter((t) => t.id !== id));
   };
 
   const addBettingResult = (result: BettingResult) => {
-    setBettingResults(prev => [result, ...prev]);
+    setBettingResults((prev) => [result, ...prev]);
   };
 
   const deleteBettingResult = (index: number) => {
-    setBettingResults(prev => prev.filter((_, i) => i !== index));
+    setBettingResults((prev) => prev.filter((_, i) => i !== index));
   };
 
   const addTradingSignal = (signal: Omit<TradingSignal, 'id'>) => {
     const newSignal = { ...signal, id: Date.now() };
-    setTradingSignals(prev => [newSignal, ...prev]);
+    setTradingSignals((prev) => [newSignal, ...prev]);
   };
 
   const updateTradingSignal = (id: number, signal: Partial<TradingSignal>) => {
-    setTradingSignals(prev => prev.map(s => s.id === id ? { ...s, ...signal } : s));
+    setTradingSignals((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, ...signal } : s))
+    );
   };
 
   const deleteTradingSignal = (id: number) => {
-    setTradingSignals(prev => prev.filter(s => s.id !== id));
+    setTradingSignals((prev) => prev.filter((s) => s.id !== id));
   };
 
   const addMarketNews = (news: Omit<MarketNews, 'id'>) => {
     const newNews = { ...news, id: Date.now() };
-    setMarketNews(prev => [newNews, ...prev]);
+    setMarketNews((prev) => [newNews, ...prev]);
   };
 
   const updateMarketNews = (id: number, news: Partial<MarketNews>) => {
-    setMarketNews(prev => prev.map(n => n.id === id ? { ...n, ...news } : n));
+    setMarketNews((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, ...news } : n))
+    );
   };
 
   const deleteMarketNews = (id: number) => {
-    setMarketNews(prev => prev.filter(n => n.id !== id));
+    setMarketNews((prev) => prev.filter((n) => n.id !== id));
   };
 
   const addMarketAnalysis = (analysis: Omit<MarketAnalysis, 'id'>) => {
     const newAnalysis = { ...analysis, id: Date.now() };
-    setMarketAnalysis(prev => [newAnalysis, ...prev]);
+    setMarketAnalysis((prev) => [newAnalysis, ...prev]);
   };
 
-  const updateMarketAnalysis = (id: number, analysis: Partial<MarketAnalysis>) => {
-    setMarketAnalysis(prev => prev.map(a => a.id === id ? { ...a, ...analysis } : a));
+  const updateMarketAnalysis = (
+    id: number,
+    analysis: Partial<MarketAnalysis>
+  ) => {
+    setMarketAnalysis((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, ...analysis } : a))
+    );
   };
 
   const deleteMarketAnalysis = (id: number) => {
-    setMarketAnalysis(prev => prev.filter(a => a.id !== id));
+    setMarketAnalysis((prev) => prev.filter((a) => a.id !== id));
   };
 
   const addTradingCourse = (course: Omit<TradingCourse, 'id'>) => {
     const newCourse = { ...course, id: Date.now() };
-    setTradingCourses(prev => [newCourse, ...prev]);
+    setTradingCourses((prev) => [newCourse, ...prev]);
   };
 
   const updateTradingCourse = (id: number, course: Partial<TradingCourse>) => {
-    setTradingCourses(prev => prev.map(c => c.id === id ? { ...c, ...course } : c));
+    setTradingCourses((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, ...course } : c))
+    );
   };
 
   const deleteTradingCourse = (id: number) => {
-    setTradingCourses(prev => prev.filter(c => c.id !== id));
+    setTradingCourses((prev) => prev.filter((c) => c.id !== id));
   };
 
   const addBlogPost = (post: Omit<BlogPost, 'id' | 'views' | 'createdAt'>) => {
@@ -396,147 +423,196 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       ...post,
       id: Date.now(),
       views: 0,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
-    setBlogPosts(prev => [newPost, ...prev]);
+    setBlogPosts((prev) => [newPost, ...prev]);
   };
 
   const updateBlogPost = (id: number, post: Partial<BlogPost>) => {
-    setBlogPosts(prev => prev.map(p => p.id === id ? { ...p, ...post } : p));
+    setBlogPosts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, ...post } : p))
+    );
   };
 
   const deleteBlogPost = (id: number) => {
-    setBlogPosts(prev => prev.filter(p => p.id !== id));
+    setBlogPosts((prev) => prev.filter((p) => p.id !== id));
   };
 
   const approveBlogPost = (id: number) => {
-    setBlogPosts(prev => prev.map(p => p.id === id ? { ...p, status: 'published' as const } : p));
+    setBlogPosts((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, status: 'published' as const } : p
+      )
+    );
   };
 
   const rejectBlogPost = (id: number, feedback: string) => {
-    setBlogPosts(prev => prev.map(p => p.id === id ? { ...p, status: 'rejected' as const, feedback } : p));
+    setBlogPosts((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, status: 'rejected' as const, feedback } : p
+      )
+    );
   };
 
   const addAdvertisement = (ad: Omit<Advertisement, 'id' | 'currentViews'>) => {
     const newAd = { ...ad, id: Date.now(), currentViews: 0 };
-    setAdvertisements(prev => [newAd, ...prev]);
+    setAdvertisements((prev) => [newAd, ...prev]);
   };
 
   const updateAdvertisement = (id: number, ad: Partial<Advertisement>) => {
-    setAdvertisements(prev => prev.map(a => a.id === id ? { ...a, ...ad } : a));
+    setAdvertisements((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, ...ad } : a))
+    );
   };
 
   const deleteAdvertisement = (id: number) => {
-    setAdvertisements(prev => prev.filter(a => a.id !== id));
+    setAdvertisements((prev) => prev.filter((a) => a.id !== id));
   };
 
   const incrementAdView = (id: number) => {
-    setAdvertisements(prev => prev.map(a => 
-      a.id === id ? { ...a, currentViews: a.currentViews + 1 } : a
-    ));
+    setAdvertisements((prev) =>
+      prev.map((a) =>
+        a.id === id ? { ...a, currentViews: a.currentViews + 1 } : a
+      )
+    );
   };
 
-  const addTask = (task: Omit<Task, 'id' | 'currentResponses' | 'currentBidders'>) => {
+  const addTask = (
+    task: Omit<Task, 'id' | 'currentResponses' | 'currentBidders'>
+  ) => {
     const newTask = {
       ...task,
       id: Date.now(),
       currentResponses: 0,
-      currentBidders: 0
+      currentBidders: 0,
     };
-    setTasks(prev => [newTask, ...prev]);
+    setTasks((prev) => [newTask, ...prev]);
   };
 
   const updateTask = (id: number, task: Partial<Task>) => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, ...task } : t));
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, ...task } : t)));
   };
 
   const deleteTask = (id: number) => {
-    setTasks(prev => prev.filter(t => t.id !== id));
+    setTasks((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const submitTask = (submission: Omit<TaskSubmission, 'id' | 'submittedAt'>) => {
+  const submitTask = (
+    submission: Omit<TaskSubmission, 'id' | 'submittedAt'>
+  ) => {
     const newSubmission = {
       ...submission,
       id: Date.now(),
-      submittedAt: new Date().toISOString()
+      submittedAt: new Date().toISOString(),
     };
-    setTaskSubmissions(prev => [newSubmission, ...prev]);
-    
-    setTasks(prev => prev.map(task => {
-      if (task.id === submission.taskId) {
-        if (task.type === 'bidding' || task.type === 'transcription') {
-          return { ...task, currentBidders: (task.currentBidders || 0) + 1 };
-        } else {
-          return { ...task, currentResponses: (task.currentResponses || 0) + 1 };
+    setTaskSubmissions((prev) => [newSubmission, ...prev]);
+
+    setTasks((prev) =>
+      prev.map((task) => {
+        if (task.id === submission.taskId) {
+          if (task.type === 'bidding' || task.type === 'transcription') {
+            return { ...task, currentBidders: (task.currentBidders || 0) + 1 };
+          } else {
+            return {
+              ...task,
+              currentResponses: (task.currentResponses || 0) + 1,
+            };
+          }
         }
-      }
-      return task;
-    }));
+        return task;
+      })
+    );
   };
 
   const approveTaskSubmission = (id: number) => {
-    setTaskSubmissions(prev => prev.map(s => s.id === id ? { ...s, status: 'approved' as const } : s));
+    setTaskSubmissions((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, status: 'approved' as const } : s))
+    );
   };
 
   const rejectTaskSubmission = (id: number, feedback: string) => {
-    setTaskSubmissions(prev => prev.map(s => s.id === id ? { ...s, status: 'rejected' as const, feedback } : s));
+    setTaskSubmissions((prev) =>
+      prev.map((s) =>
+        s.id === id ? { ...s, status: 'rejected' as const, feedback } : s
+      )
+    );
   };
 
-  const addDepositRequest = (request: Omit<DepositRequest, 'id' | 'submittedAt'>) => {
+  const addDepositRequest = (
+    request: Omit<DepositRequest, 'id' | 'submittedAt'>
+  ) => {
     const newRequest = {
       ...request,
       id: Date.now(),
-      submittedAt: new Date().toISOString()
+      submittedAt: new Date().toISOString(),
     };
-    setDepositRequests(prev => [newRequest, ...prev]);
+    setDepositRequests((prev) => [newRequest, ...prev]);
   };
 
-  const addWithdrawalRequest = (request: Omit<WithdrawalRequest, 'id' | 'submittedAt'>) => {
+  const addWithdrawalRequest = (
+    request: Omit<WithdrawalRequest, 'id' | 'submittedAt'>
+  ) => {
     const newRequest = {
       ...request,
       id: Date.now(),
-      submittedAt: new Date().toISOString()
+      submittedAt: new Date().toISOString(),
     };
-    setWithdrawalRequests(prev => [newRequest, ...prev]);
+    setWithdrawalRequests((prev) => [newRequest, ...prev]);
   };
 
   const approveDeposit = (id: number) => {
-    setDepositRequests(prev => prev.map(r => r.id === id ? { ...r, status: 'approved' as const } : r));
+    setDepositRequests((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: 'approved' as const } : r))
+    );
   };
 
   const rejectDeposit = (id: number) => {
-    setDepositRequests(prev => prev.map(r => r.id === id ? { ...r, status: 'rejected' as const } : r));
+    setDepositRequests((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: 'rejected' as const } : r))
+    );
   };
 
   const approveWithdrawal = (id: number) => {
-    setWithdrawalRequests(prev => prev.map(r => r.id === id ? { ...r, status: 'approved' as const } : r));
+    setWithdrawalRequests((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: 'approved' as const } : r))
+    );
   };
 
   const rejectWithdrawal = (id: number) => {
-    setWithdrawalRequests(prev => prev.map(r => r.id === id ? { ...r, status: 'rejected' as const } : r));
+    setWithdrawalRequests((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: 'rejected' as const } : r))
+    );
   };
 
-  const addUserActivity = (activity: Omit<UserActivity, 'id' | 'timestamp'>) => {
+  const addUserActivity = (
+    activity: Omit<UserActivity, 'id' | 'timestamp'>
+  ) => {
     const newActivity = {
       ...activity,
       id: Date.now(),
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
-    setUserActivities(prev => [newActivity, ...prev.slice(0, 99)]);
+    setUserActivities((prev) => [newActivity, ...prev.slice(0, 99)]);
   };
 
   const getStats = () => {
     return {
       totalUsers: 1,
-      totalRevenue: depositRequests.filter(r => r.status === 'approved').reduce((sum, r) => sum + r.amount, 0),
+      totalRevenue: depositRequests
+        .filter((r) => r.status === 'approved')
+        .reduce((sum, r) => sum + r.amount, 0),
       pendingActivations: 0,
-      pendingDeposits: depositRequests.filter(r => r.status === 'pending').length,
-      pendingWithdrawals: withdrawalRequests.filter(r => r.status === 'pending').length,
-      pendingTasks: taskSubmissions.filter(s => s.status === 'pending').length,
-      pendingBlogs: blogPosts.filter(p => p.status === 'pending').length,
-      activeAds: advertisements.filter(a => a.isActive).length,
-      activeTasks: tasks.filter(t => t.isActive).length,
-      activeSignals: tradingSignals.length
+      pendingDeposits: depositRequests.filter((r) => r.status === 'pending')
+        .length,
+      pendingWithdrawals: withdrawalRequests.filter(
+        (r) => r.status === 'pending'
+      ).length,
+      pendingTasks: taskSubmissions.filter((s) => s.status === 'pending')
+        .length,
+      pendingBlogs: blogPosts.filter((p) => p.status === 'pending').length,
+      activeAds: advertisements.filter((a) => a.isActive).length,
+      activeTasks: tasks.filter((t) => t.isActive).length,
+      activeSignals: tradingSignals.length,
     };
   };
 
@@ -593,12 +669,8 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     rejectWithdrawal,
     userActivities,
     addUserActivity,
-    getStats
+    getStats,
   };
 
-  return (
-    <DataContext.Provider value={value}>
-      {children}
-    </DataContext.Provider>
-  );
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };

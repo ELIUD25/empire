@@ -6,11 +6,11 @@ const router = express.Router();
 
 // Configure multer for memory storage
 const storage = multer.memoryStorage();
-const upload = multer({ 
+const upload = multer({
   storage,
   limits: {
-    fileSize: 10 * 1024 * 1024 // 10MB limit
-  }
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
 });
 
 // Upload image (placeholder - requires Cloudinary setup)
@@ -24,7 +24,7 @@ router.post('/image', auth, upload.single('image'), async (req, res) => {
     // In production, you would upload to Cloudinary here
     res.json({
       url: 'https://via.placeholder.com/400x300',
-      publicId: 'placeholder_' + Date.now()
+      publicId: 'placeholder_' + Date.now(),
     });
   } catch (error) {
     console.error('Upload image error:', error);
@@ -43,7 +43,7 @@ router.post('/video', auth, upload.single('video'), async (req, res) => {
     // In production, you would upload to Cloudinary here
     res.json({
       url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
-      publicId: 'placeholder_video_' + Date.now()
+      publicId: 'placeholder_video_' + Date.now(),
     });
   } catch (error) {
     console.error('Upload video error:', error);

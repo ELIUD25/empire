@@ -30,13 +30,15 @@ router.post('/register', async (req, res) => {
       name,
       email,
       password,
-      referredBy: referralCode && referralCode.trim() ? referralCode : null
+      referredBy: referralCode && referralCode.trim() ? referralCode : null,
     });
 
     await user.save();
 
     // Generate JWT
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '7d',
+    });
 
     res.status(201).json({
       token,
@@ -52,8 +54,8 @@ router.post('/register', async (req, res) => {
         totalEarnings: user.totalEarnings,
         referredBy: user.referredBy,
         activatedAt: user.activatedAt,
-        registeredAt: user.createdAt
-      }
+        registeredAt: user.createdAt,
+      },
     });
   } catch (error) {
     console.error('Registration error:', error);
@@ -79,7 +81,9 @@ router.post('/login', async (req, res) => {
     }
 
     // Generate JWT
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '7d',
+    });
 
     res.json({
       token,
@@ -95,8 +99,8 @@ router.post('/login', async (req, res) => {
         totalEarnings: user.totalEarnings,
         referredBy: user.referredBy,
         activatedAt: user.activatedAt,
-        registeredAt: user.createdAt
-      }
+        registeredAt: user.createdAt,
+      },
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -120,8 +124,8 @@ router.get('/me', auth, async (req, res) => {
         totalEarnings: req.user.totalEarnings,
         referredBy: req.user.referredBy,
         activatedAt: req.user.activatedAt,
-        registeredAt: req.user.createdAt
-      }
+        registeredAt: req.user.createdAt,
+      },
     });
   } catch (error) {
     console.error('Get user error:', error);
@@ -133,11 +137,11 @@ router.get('/me', auth, async (req, res) => {
 router.post('/check-referral', async (req, res) => {
   try {
     const { referralCode } = req.body;
-    
+
     if (!referralCode || !referralCode.trim()) {
       return res.json({ valid: true }); // Allow empty referral codes
     }
-    
+
     const user = await User.findOne({ referralCode });
     res.json({ valid: !!user });
   } catch (error) {

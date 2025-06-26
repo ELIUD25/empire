@@ -26,6 +26,8 @@ export default defineConfig({
     },
   },
   define: {
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'), // Ensure NODE_ENV is set correctly
+    'process.env.NODE_ENV': JSON.stringify(
+      process.env.NODE_ENV || 'development'
+    ), // Ensure NODE_ENV is set correctly
   },
 });

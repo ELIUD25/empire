@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Crown, Menu, X, User, LogOut, Settings, DollarSign } from 'lucide-react';
+import {
+  Crown,
+  Menu,
+  X,
+  User,
+  LogOut,
+  Settings,
+  DollarSign,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext.tsx';
 
 const Header: React.FC = () => {
@@ -27,36 +35,63 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-300 hover:text-white transition-colors">
+            <Link
+              to="/"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Home
             </Link>
-            <Link to="/services" className="text-gray-300 hover:text-white transition-colors">
+            <Link
+              to="/services"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Services
             </Link>
-            <Link to="/betting" className="text-gray-300 hover:text-white transition-colors">
+            <Link
+              to="/betting"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Betting
             </Link>
-            <Link to="/trading" className="text-gray-300 hover:text-white transition-colors">
+            <Link
+              to="/trading"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Trading
             </Link>
             {user?.isActivated && (
               <>
-                <Link to="/blog" className="text-gray-300 hover:text-white transition-colors">
+                <Link
+                  to="/blog"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
                   Blog
                 </Link>
-                <Link to="/casino" className="text-gray-300 hover:text-white transition-colors">
+                <Link
+                  to="/casino"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
                   Casino
                 </Link>
-                <Link to="/ads" className="text-gray-300 hover:text-white transition-colors">
+                <Link
+                  to="/ads"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
                   Ads
                 </Link>
-                <Link to="/microtasks" className="text-gray-300 hover:text-white transition-colors">
+                <Link
+                  to="/microtasks"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
                   Tasks
                 </Link>
               </>
             )}
             {user?.role === 'admin' && (
-              <Link to="/admin" className="text-yellow-400 hover:text-yellow-300 transition-colors">
+              <Link
+                to="/admin"
+                className="text-yellow-400 hover:text-yellow-300 transition-colors"
+              >
                 Admin
               </Link>
             )}
@@ -126,7 +161,11 @@ const Header: React.FC = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden text-white"
             >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -135,36 +174,63 @@ const Header: React.FC = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <nav className="flex flex-col space-y-3">
-              <Link to="/" className="text-gray-300 hover:text-white transition-colors">
+              <Link
+                to="/"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
                 Home
               </Link>
-              <Link to="/services" className="text-gray-300 hover:text-white transition-colors">
+              <Link
+                to="/services"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
                 Services
               </Link>
-              <Link to="/betting" className="text-gray-300 hover:text-white transition-colors">
+              <Link
+                to="/betting"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
                 Betting
               </Link>
-              <Link to="/trading" className="text-gray-300 hover:text-white transition-colors">
+              <Link
+                to="/trading"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
                 Trading
               </Link>
               {user?.isActivated && (
                 <>
-                  <Link to="/blog" className="text-gray-300 hover:text-white transition-colors">
+                  <Link
+                    to="/blog"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
                     Blog
                   </Link>
-                  <Link to="/casino" className="text-gray-300 hover:text-white transition-colors">
+                  <Link
+                    to="/casino"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
                     Casino
                   </Link>
-                  <Link to="/ads" className="text-gray-300 hover:text-white transition-colors">
+                  <Link
+                    to="/ads"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
                     Ads
                   </Link>
-                  <Link to="/microtasks" className="text-gray-300 hover:text-white transition-colors">
+                  <Link
+                    to="/microtasks"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
                     Tasks
                   </Link>
                 </>
               )}
               {user?.role === 'admin' && (
-                <Link to="/admin" className="text-yellow-400 hover:text-yellow-300 transition-colors">
+                <Link
+                  to="/admin"
+                  className="text-yellow-400 hover:text-yellow-300 transition-colors"
+                >
                   Admin Dashboard
                 </Link>
               )}

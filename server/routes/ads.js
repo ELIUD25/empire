@@ -8,7 +8,9 @@ const router = express.Router();
 // Get all advertisements
 router.get('/', auth, async (req, res) => {
   try {
-    const ads = await Advertisement.find({ isActive: true }).sort({ createdAt: -1 });
+    const ads = await Advertisement.find({ isActive: true }).sort({
+      createdAt: -1,
+    });
     res.json(ads);
   } catch (error) {
     console.error('Get advertisements error:', error);
@@ -25,7 +27,9 @@ router.post('/:id/watch', auth, async (req, res) => {
     }
 
     if (ad.currentViews >= ad.maxViews) {
-      return res.status(400).json({ error: 'Advertisement has reached maximum views' });
+      return res
+        .status(400)
+        .json({ error: 'Advertisement has reached maximum views' });
     }
 
     // Update ad views
@@ -38,13 +42,24 @@ router.post('/:id/watch', auth, async (req, res) => {
     user.totalEarnings += ad.reward;
     await user.save();
 
-    res.json({ 
+    res.json({
       message: 'Advertisement watched successfully',
       reward: ad.reward,
-      newBalance: user.balance
+      newBalance: user.balance,
     });
   } catch (error) {
     console.error('Watch advertisement error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get all advertisements for admin
+router.get('/admin/all', adminAuth, async (req, res) => {
+  try {
+    const ads = await Advertisement.find().sort({ createdAt: -1 });
+    res.json(ads);
+  } catch (error) {
+    console.error('Get admin advertisements error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -57,6 +72,36 @@ router.post('/', adminAuth, async (req, res) => {
     res.status(201).json(ad);
   } catch (error) {
     console.error('Create advertisement error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Update advertisement (admin only)
+router.put('/:id', adminAuth, async (req, res) => {
+  try {
+    const ad = await Advertisement.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!ad) {
+      return res.status(404).json({ error: 'Advertisement not found' });
+    }
+    res.json(ad);
+  } catch (error) {
+    console.error('Update advertisement error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Delete advertisement (admin only)
+router.delete('/:id', adminAuth, async (req, res) => {
+  try {
+    const ad = await Advertisement.findByIdAndDelete(req.params.id);
+    if (!ad) {
+      return res.status(404).json({ error: 'Advertisement not found' });
+    }
+    res.json({ message: 'Advertisement deleted successfully' });
+  } catch (error) {
+    console.error('Delete advertisement error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });

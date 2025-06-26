@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext.tsx';
 // Mock function to simulate sending reset code
 const sendResetCode = async (): Promise<string> => {
   // Simulate API call delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   // Mock reset code generation
   return Math.random().toString(36).slice(2, 8).toUpperCase();
 };
@@ -14,7 +14,7 @@ const sendResetCode = async (): Promise<string> => {
 // Mock function to verify reset code
 const verifyResetCode = async (): Promise<boolean> => {
   // Simulate API call delay
-  await new Promise(resolve => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, 500));
   // In a real app, verify against stored code
   return true; // Simple validation
 };
@@ -22,7 +22,7 @@ const verifyResetCode = async (): Promise<boolean> => {
 // Mock function to reset password
 const resetPassword = async (): Promise<boolean> => {
   // Simulate API call delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   // In a real app, verify code and update password
   return true;
 };
@@ -34,7 +34,9 @@ const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showResetModal, setShowResetModal] = useState(false);
-  const [resetStep, setResetStep] = useState<'email' | 'code' | 'newPassword'>('email');
+  const [resetStep, setResetStep] = useState<'email' | 'code' | 'newPassword'>(
+    'email'
+  );
   const [resetEmail, setResetEmail] = useState('');
   const [resetCode, setResetCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -54,7 +56,8 @@ const LoginPage: React.FC = () => {
       await login(email, password);
       navigate('/dashboard');
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Invalid email or password';
+      const errorMessage =
+        err instanceof Error ? err.message : 'Invalid email or password';
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -124,8 +127,12 @@ const LoginPage: React.FC = () => {
 
           {/* Demo Credentials */}
           <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-4 mb-6">
-            <h3 className="text-sm font-semibold text-blue-300 mb-2">Demo Credentials:</h3>
-            <p className="text-xs text-blue-200">Admin: admin@empiremine.com / password</p>
+            <h3 className="text-sm font-semibold text-blue-300 mb-2">
+              Demo Credentials:
+            </h3>
+            <p className="text-xs text-blue-200">
+              Admin: admin@empiremine.com / password
+            </p>
           </div>
 
           {/* Error Message */}
@@ -173,7 +180,11 @@ const LoginPage: React.FC = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -191,7 +202,10 @@ const LoginPage: React.FC = () => {
           <div className="mt-8 text-center">
             <p className="text-gray-300">
               Don't have an account?{' '}
-              <Link to="/register" className="text-yellow-400 hover:text-yellow-300 font-medium">
+              <Link
+                to="/register"
+                className="text-yellow-400 hover:text-yellow-300 font-medium"
+              >
                 Sign up here
               </Link>
             </p>
@@ -211,7 +225,9 @@ const LoginPage: React.FC = () => {
       {showResetModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center px-4 z-50">
           <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 max-w-md w-full">
-            <h2 className="text-2xl font-bold text-white mb-4">Reset Password</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Reset Password
+            </h2>
             {resetError && (
               <div className="bg-red-500/20 border border-red-400/30 rounded-lg p-3 mb-4">
                 <p className="text-red-300 text-sm">{resetError}</p>
@@ -274,7 +290,11 @@ const LoginPage: React.FC = () => {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
                       >
-                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -305,10 +325,10 @@ const LoginPage: React.FC = () => {
                   {resetLoading
                     ? 'Processing...'
                     : resetStep === 'email'
-                    ? 'Send Reset Code'
-                    : resetStep === 'code'
-                    ? 'Verify Code'
-                    : 'Reset Password'}
+                      ? 'Send Reset Code'
+                      : resetStep === 'code'
+                        ? 'Verify Code'
+                        : 'Reset Password'}
                 </button>
                 <button
                   type="button"

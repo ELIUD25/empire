@@ -12,7 +12,7 @@ export default tseslint.config(
     extends: [
       js.configs.recommended,
       ...tseslint.configs.recommended,
-      prettierConfig // Add Prettier last to override conflicting rules
+      prettierConfig, // Add Prettier last to override conflicting rules
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -22,19 +22,22 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      prettier: prettier // Add Prettier plugin
+      prettier: prettier, // Add Prettier plugin
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true }
+        { allowConstantExport: true },
       ],
-      'semi': ['error', 'always'],
+      semi: ['error', 'always'],
       'prettier/prettier': 'error', // Enforce Prettier formatting
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      'no-console': ['warn', { allow: ['warn', 'error'] }]
-    }
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+    },
   }
 );

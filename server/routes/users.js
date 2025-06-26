@@ -15,15 +15,69 @@ router.get('/', adminAuth, async (req, res) => {
   }
 });
 
+// Ban user (admin only)
+router.put('/:id/ban', adminAuth, async (req, res) => {
+  try {
+    const { reason } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        isBanned: true,
+        banReason: reason || 'No reason provided',
+      },
+      { new: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error('Ban user error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Unban user (admin only)
+router.put('/:id/unban', adminAuth, async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        isBanned: false,
+        banReason: null,
+      },
+      { new: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error('Unban user error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Activate user account
 router.put('/activate', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    
-    if (user.balance < 500) {
-      return res.status(400).json({ error: 'Insufficient balance for activation' });
+
+    if (user.isBanned) {
+      return res.status(403).json({ error: 'Account is banned' });
     }
-    
+
+    if (user.balance < 500) {
+      return res
+        .status(400)
+        .json({ error: 'Insufficient balance for activation' });
+    }
+
     user.balance -= 500;
     user.isActivated = true;
     user.activatedAt = new Date();
@@ -42,6 +96,7 @@ router.put('/activate', auth, async (req, res) => {
         email: user.email,
         role: user.role,
         isActivated: user.isActivated,
+        isBanned: user.isBanned,
         balance: user.balance,
         referralCode: user.referralCode,
         referrals: user.referrals,
@@ -49,8 +104,8 @@ router.put('/activate', auth, async (req, res) => {
         referredBy: user.referredBy,
         referralLink: user.referralLink,
         activatedAt: user.activatedAt,
-        registeredAt: user.createdAt
-      }
+        registeredAt: user.createdAt,
+      },
     });
   } catch (error) {
     console.error('Activate user error:', error);
@@ -71,7 +126,9 @@ async function processReferralBonuses(referralCode, newUserId) {
 
       // Level 2 referrer
       if (level1Referrer.referredBy) {
-        const level2Referrer = await User.findOne({ referralCode: level1Referrer.referredBy });
+        const level2Referrer = await User.findOne({
+          referralCode: level1Referrer.referredBy,
+        });
         if (level2Referrer) {
           level2Referrer.balance += 150;
           level2Referrer.totalEarnings += 150;
@@ -79,7 +136,9 @@ async function processReferralBonuses(referralCode, newUserId) {
 
           // Level 3 referrer
           if (level2Referrer.referredBy) {
-            const level3Referrer = await User.findOne({ referralCode: level2Referrer.referredBy });
+            const level3Referrer = await User.findOne({
+              referralCode: level2Referrer.referredBy,
+            });
             if (level3Referrer) {
               level3Referrer.balance += 50;
               level3Referrer.totalEarnings += 50;
