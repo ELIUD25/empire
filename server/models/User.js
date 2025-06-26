@@ -61,6 +61,7 @@ const userSchema = new mongoose.Schema(
     referralLink: {
       type: String,
       required: true,
+      unique: true,
     },
     activatedAt: {
       type: Date,
@@ -72,18 +73,46 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Generate referral code before saving
+// Generate unique referral code and link
 userSchema.pre('save', async function (next) {
-  if (this.isNew && !this.referralCode) {
-    this.referralCode =
-      'EM' + Math.random().toString(36).substr(2, 6).toUpperCase();
-    this.referralLink = `https://empire-eosin.vercel.app/register?ref=${this.referralCode}`;
-  }
+  try {
+    if (!this.referralCode) { // Handle both new and existing documents
+      let isUnique = false;
+      let referralCode;
+      let attempts = 0;
+      const maxAttempts = 10;
 
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 12);
-  }
+      while (!isUnique && attempts < maxAttempts) {
+        referralCode = 'EM' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        const existingUser = await mongoose.models.User.findOne({ referralCode }).exec();
+        if (!existingUser) {
+          isUnique = true;
+        }
+        attempts++;
+      }
 
+      if (!isUnique) {
+        return next(new Error('Failed to generate unique referral code after multiple attempts'));
+      }
+
+      this.referralCode = referralCode;
+      this.referralLink = `https://empire-eosin.vercel.app/register?ref=${referralCode}`;
+    }
+
+    if (this.isModified('password')) {
+      this.password = await bcrypt.hash(this.password, 12);
+    }
+
+    next();
+  } catch (error) {
+    console.error('pre(save) middleware error:', error);
+    next(error);
+  }
+});
+
+// Enforce validation on update operations
+userSchema.pre(['findOneAndUpdate', 'updateOne', 'updateMany'], function (next) {
+  this.options.runValidators = true;
   next();
 });
 
